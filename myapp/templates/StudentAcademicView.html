@@ -1,0 +1,59 @@
+{% block content %}
+{% load widget_tweaks %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="maindiv" style="width: 89%; margin-left: 6%;">
+
+
+    <h1 style="width: 50%; margin-left: 24%; color: gray;">Student Academic Details</h1>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Maths</th>
+                                <th>Physics</th>
+                                <th>Chemistry</th>
+                                <th>Biology</th>
+                                <th>English</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <td>{{ getStudent.rollNo_id }}</td>
+                            <td> {{ getStudent.maths }}</td>
+                            <td>{{ getStudent.physics }}</td>
+                            <td>{{ getStudent.chemistry }}</td>
+                            <td>{{ getStudent.biology }}</td>
+                            <td>{{ getStudent.english }}</td>
+                           
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+</html>
+{% endblock %}

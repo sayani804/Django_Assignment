@@ -1,0 +1,316 @@
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+
+    <style>
+        .add-btn {
+    background-color: #00c5fb;
+    border: 1px solid #00c5fb;
+    border-radius: 50px;
+    color: #fff;
+    float: right;
+    margin-top: 3%;
+    font-weight: 500;
+    min-width: 140px;
+}
+.add-btn:hover,
+.add-btn:focus,
+.add-btn:active {
+	background-color: #00b7ed;
+	border: 1px solid #00b7ed;
+    color: #fff;
+}
+
+.modal-btn .row {
+	margin-left: -8px;
+	margin-right: -8px;
+}
+.modal-btn  {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.continue-btn {
+    background-color: #fff;
+    border: 1px solid #00c5fb;
+    border-radius: 50px;
+    color: #00c5fb;
+    width: 45%;
+    float:left;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 20px;
+    text-align: center;
+}
+.continue-btn:hover,
+.continue-btn:focus,
+.continue-btn:active {
+	background-color: #00c5fb;
+	border: 1px solid #00c5fb;
+	color: #fff;
+}
+
+.cancel-btn {
+    background-color: #fff;
+    border: 1px solid #00c5fb;
+    border-radius: 50px;
+    color: #00c5fb;
+    /* display: block; */
+    float:right;
+    width: 45%;
+    padding-top: 2%;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 20px;
+    text-align: center;
+}
+.cancel-btn:hover,
+.cancel-btn:focus,
+.cancel-btn:active {
+	background-color: #00c5fb;
+	border: 1px solid #00c5fb;
+	color: #fff;
+}
+
+.loginbtn{
+    margin-top: 3%;
+    background-color: #00c5fb;
+    border: 1px solid #00c5fb;
+    color: #fff;
+    width: 11%;
+    border-radius: 18px;
+    padding: 5px;
+}
+
+
+
+</style>
+
+    
+</head>
+<body>
+    <div class="maindiv" style="width: 89%; margin-left: 6%;">
+    <div>
+    <div><h1 style="width: 50%; float: left; color: gray;">Student Info Details</h1> </div>
+  
+    <div  style="float: right; margin-top: 3%; margin-left: 2%; " class="input-group">
+        <form name="myform" method="GET" action="{% url 'search' %}" >  
+        <input type="text" name="search" placeholder="Search by name" />
+        </form> 
+      </div>
+       
+    
+    {% if request.user.is_authenticated  %}
+    <div class="col-auto float-right ml-auto">
+        <a href="/student/" class="btn add-btn" ><i class="fa fa-plus"></i> Add Students</a>
+    </div>
+     <button class="loginbtn"> <a style="color: #fff;" href="/logout/" class="logout mx-2"> Logout </a></button>
+     
+    {% else %}
+    <button class="loginbtn"><a style="color: #fff;" href="/login" > Login </a></button>
+  {% endif %}
+  </div>
+      <div >
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name </th>
+                                <th>Student class</th>
+                                <th>School Name</th>
+                                <th>Mobile No</th>
+                                <th>Address</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if stname %}
+                            {% for i in stname %}
+                            <td>{{ i.rollNo }}</td> 
+                                <td>{{ i.name}}</td>
+                                <td>{{ i.student_class }}</td>
+                                <td>{{i.school}}</td>
+                                <td>{{ i.mobile }}</td>
+                                <td>{{ i.address }}</td>   
+                                {% endfor %}
+                            {% endif %}
+
+                            {% for i in StudentInfo_list %}
+                                <tr>
+                                <td>{{ i.rollNo }}</td>
+                                {% if request.user.is_authenticated  %}   
+                                <td><a href="{% url  'studentView' i.rollNo %}"> {{ i.name }}</a> </td>
+                                {% else %}
+                                <td> {{ i.name }}</td>
+                                {% endif %}
+                                <td>{{ i.student_class }}</td>
+                                <td>{{ i.school }}</td>
+                                <td>{{ i.mobile }}</td>
+                                <td>{{ i.address }}</td>
+                                <td class="text-right">
+                            
+                                    {% if request.user.is_authenticated  %}
+                                    <a class="btn btn-info dropdown-item edit-Info" href="#" data-toggle="modal" data-target="#myModal" data-url="/editStudentInfo/{{i.rollNo}}/" data-name="{{i.name}}" data-student_class="{{i.student_class}}" data-school="{{i.school}}" data-mobile="{{i.mobile}}" data-address="{{i.address}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a href="#" class="btn btn-warning  dropdown-item  deleteInfo" data-toggle="modal" data-target="#delete-info"   data-url="/deleteStudentInfo/{{i.rollNo}}/"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    {% endif %}
+                                </td>
+                                </tr>                                   
+                            {% endfor %}
+
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    			
+        <!--  Edit  Modal -->
+        <div class="modal fade" id="myModal" role="dialog" data-url="">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Edit Student details</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="" id="edit-Info">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            {% render_field form.name value=""  class="form-control"  %}
+                        </div>
+                        <div class="form-group">
+                            <label>Class</label>
+                            {% render_field form.student_class value="" class="form-control"  %}
+                        </div>
+                        <div class="form-group">
+                            <label>Enter School Name</label>
+                            {% render_field form.school value=""  class="form-control"  %}
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile No</label>
+                            {% render_field form.mobile value=""  class="form-control"  %}
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            {% render_field form.address value=""  class="form-control"  %}
+                        </div>
+                        <div class="submit-section">
+                            <button style="width: 16%;" class="btn btn-primary submit-btn" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <!-- Edit info  -->
+
+          <!-- delete Info -->
+          <div class="modal custom-modal fade" id="delete-info" data-url="" data-val=""  role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Student</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-2">
+                                    <a href="/studentInfoView/" class="btn btn-primary continue-btn" id="student_delete_continue">Delete</a>
+                                </div>
+                                <div class="col-2">
+                                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- delete Info -->
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".edit-Info").click(function () {
+            alert("ttttttttttt")
+            var editItemUrl = $(this).data('url');
+            var editItemname = $(this).data('name');
+            var editItemstudent_class = $(this).data('student_class');
+            var editItemschool = $(this).data('school');
+            var editItemmobile = $(this).data('mobile');
+            var editItemaddress = $(this).data('address');
+            console.log(editItemUrl,"!!!!!!!!!!!!!!!")
+            console.log(editItemname,"!!!!!!!!!!!!!!!")
+            console.log(editItemstudent_class,"!!!!!!!!!!!!!!!")
+            console.log(editItemschool,"!!!!!!!!!!!!!!!")
+            console.log(editItemmobile,"!!!!!!!!!!!!!!!")
+            console.log(editItemaddress,"!!!!!!!!!!!!!!!")
+
+            $("#edit-Info").attr("action", editItemUrl);
+            $("#edit-Info #id_name").val(editItemname);
+            $("#edit-Info #id_student_class").val(editItemstudent_class);
+            $("#edit-Info #id_school").val(editItemschool);
+            $("#edit-Info #id_mobile").val(editItemmobile);
+            $("#edit-Info #id_address").val(editItemaddress);
+	});
+
+
+    $(".deleteInfo").click(function () {
+        // alert("sure")
+		var url = $(this).data('url');
+		$("#delete-info").data('url', url);
+        console.log(url,"!!!!!!!!!!!!")
+	});
+
+	$("#student_delete_continue").click(function () {
+        // alert("RRRRRRRRRRRRRRRRR")
+		var url = $("#delete-info").data('url');
+        console.log(url,"!!!!!!!!!!!!")
+		$.ajax({
+			url: url,
+			type: "DELETE",
+			contentType: false,
+			processData: false,
+			success: function (res) {
+				location.reload();
+			},
+		});
+	});
+
+
+    });
+</script>
+
+
+
+
+</body>
+</html>
+{% endblock %}

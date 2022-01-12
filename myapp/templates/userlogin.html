@@ -1,0 +1,51 @@
+
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container ">
+    <div>
+      <h3 class=" m-0 text-center">Login here</h3>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+      
+      
+              <form id="signup-form" method="POST" action="{% url 'login' %}" role="form" novalidate>
+                  {% csrf_token %}
+      
+      
+                  <div class="form-group">
+                    <label for="username" class="font-weight-bold"> Username</label>
+                    {% render_field forms.username value=""  class="form-control"  %}
+                      <div class="help-block with-errors text-danger"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="username" class="font-weight-bold"> Password</label>
+                    {% render_field forms.password value=""  class="form-control"  %}
+                      <div class="help-block with-errors text-danger"></div>
+                  </div>
+                  {% for i in forms %}
+                  <div class="help-block with-errors text-danger">{{ i.errors|striptags }}</div>
+                  {% endfor %}
+                  <div class="submit-section">
+                    <button style="width: 16%;" class="btn btn-primary submit-btn" type="submit">Login</button>
+                </div>
+              </form>
+      
+              <!-- Register -->
+              <p class="text-center m-3">Not a member?
+                  <a href="{% url 'signup' %}">Register</a>
+              </p>
+            </div>
+      
+          </div>
+    </div>
+    </div>
+</body>
+</html>

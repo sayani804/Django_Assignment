@@ -1,0 +1,16 @@
+.add-btn {
+    background-color: #00c5fb;
+    border: 1px solid #00c5fb;
+    border-radius: 50px;
+    color: #fff;
+    float: right;
+    font-weight: 500;
+    min-width: 140px;
+}
+.add-btn:hover,
+.add-btn:focus,
+.add-btn:active {
+	background-color: #00b7ed;
+	border: 1px solid #00b7ed;
+    color: #fff;
+}
