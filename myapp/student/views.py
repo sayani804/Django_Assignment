@@ -13,6 +13,10 @@ from django.views.decorators.csrf import csrf_exempt
 #     return render(request, "student.html")
 
 
+def homepage(request):
+    
+    return render(request, 'home.html')
+
 def userSignUp(request):
     if request.method == "POST":
         fms = SignUpForm(request.POST)
